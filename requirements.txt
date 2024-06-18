@@ -1,3 +1,6 @@
 pandas
 numpy
 numba
+backtrader[plotting]
+alpha_vantage
+deap
