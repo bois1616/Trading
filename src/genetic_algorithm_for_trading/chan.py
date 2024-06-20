@@ -19,8 +19,7 @@ from typing import Tuple
 
 def get_alpha_vantage(key: str, ticker: str) -> Tuple[pd.DataFrame, dict]:
     """Given a key to Alpha Vantage and a valid ticker, this function will
-    query alpha vantage and save the dataset into a csv in a predefined
-    directory using ticker as the filename.
+    query alpha vantage for the daily adjusted time series data and return
     """
     ts = TimeSeries(key=key, output_format="pandas", indexing_type="date")
 
