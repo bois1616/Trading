@@ -11,28 +11,26 @@ from pathlib import Path
 from alpha_vantage.timeseries import TimeSeries
 import sys
 import os
+from typing import Tuple
 
 # globals
 
 # functions
 
-def get_alpha_vantage(key: str, ticker: str, data_path: Path) -> None:
+def get_alpha_vantage(key: str, ticker: str) -> Tuple[pd.DataFrame, dict]:
     """Given a key to Alpha Vantage and a valid ticker, this function will
     query alpha vantage and save the dataset into a csv in a predefined
     directory using ticker as the filename.
     """
-    if data_path is None:
-        raise ValueError("data_path cannot be None")
-
     ts = TimeSeries(key=key, output_format="pandas", indexing_type="date")
-    out = data_path / f"{ticker}.csv"
 
     try:
-        data, meta_data = ts.get_daily_adjusted(symbol='i', outputsize="full")
-        data.to_csv(out)
-        print(f"{ticker} has been downloaded to {out}")
-    except:
-        print(f"{ticker} Not found.")
+        data, meta_data = ts.get_daily_adjusted(symbol=ticker) # , outputsize="full")
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    return data, meta_data
 
 
 def read_alpha_vantage(ticker: str, data_path: Path = None) -> pd.DataFrame:
@@ -72,13 +70,23 @@ def read_alpha_vantage(ticker: str, data_path: Path = None) -> pd.DataFrame:
 
 if __name__ == '__main__':
 
-    ALPHA_VANTAGE_DIR_PATH = Path("../data/alpha_vantage")
-    if not ALPHA_VANTAGE_DIR_PATH.exists():
-        ALPHA_VANTAGE_DIR_PATH.mkdir(parents=True)
+    data_path = Path("../data/alpha_vantage")
+    if not data_path.exists():
+        data_path.mkdir(parents=True)
 
-    SECRET = "WUH8OLXGVSQRQLD1"
+    ALPHA_ADVANTAGE_KEY = os.getenv('ALPHA_ADVANTAGE_KEY', 'WUH8OLXGVSQRQLD1')
+    ticker = "EUR"
+    cached_ts = data_path / f"{ticker}.csv"
 
-    get_alpha_vantage(key=SECRET, ticker="NVDA", data_path=ALPHA_VANTAGE_DIR_PATH)
-    df = read_alpha_vantage(ticker="NVDA", data_path=ALPHA_VANTAGE_DIR_PATH)
+    if not cached_ts.exists():
+        time_series, metadata = get_alpha_vantage(key=ALPHA_ADVANTAGE_KEY,
+                                                  ticker=ticker,
+                                                  )
 
-    print(df.head())
+        # TODO Vor Speicherung in die korrekte Form bringen
+        time_series.to_csv(cached_ts)
+        print(f"{ticker} has been saved to {cached_ts}")
+    else:
+        time_series = read_alpha_vantage(ticker=ticker, data_path=data_path)
+
+    print(time_series.head())
