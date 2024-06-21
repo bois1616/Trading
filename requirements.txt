@@ -4,3 +4,4 @@ numba
 backtrader[plotting]
 alpha_vantage
 deap
+tqdm
