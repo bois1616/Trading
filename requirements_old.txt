@@ -1,0 +1,6 @@
+pandas
+matplotlib
+seaborn
+scipy
+scikit-learn statsmodels pandas_ta ta ccxt
+numpy numba backtrader[plotting] alpha_vantage deap tqdm
