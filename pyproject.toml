@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "trading"
+version = "0.1.0"
+description = ""
+authors = ["bois1616 <github@hexenwoche.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.3"
+matplotlib = "^3.9.2"
+seaborn = "^0.13.2"
+scipy = "^1.14.1"
+scikit-learn = "^1.5.2"
+statsmodels = "^0.14.3"
+pandas-ta = "^0.3.14b0"
+ta = "^0.11.0"
+ccxt = "^4.4.6"
+numpy = "^2.1.1"
+backtrader = {extras = ["plotting"], version = "^1.9.78.123"}
+alpha-vantage = "^3.0.0"
+deap = "^1.4.1"
+tqdm = "^4.66.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
